@@ -1,0 +1,103 @@
+import random
+accounts = {}
+
+def create_account():
+    acc = input("Account number: ")
+    if acc in accounts:
+        print("Account already exists!")
+    else:
+        name = input("Account holder's name: ")
+        balance = float(input("Initial deposit: "))
+        accounts[acc] = {"Name": name, "Balance": balance}
+        print("Created account for {}".format(name))
+
+def list_accounts():
+    if not accounts:
+        print("Accounts not registered yet!")
+    else:
+        for acc, info in accounts.items():
+            print("Account: {}, Holder: {}, Balance: {}".format(acc, info['Name'], info['Balance']))
+
+def issue_credit_card():
+    acc = input("Account number: ")
+    if acc not in accounts:
+        print("Account not found! Creating a new account...")
+        create_account()
+    card_num = str(random.randint(1000000000000000, 9999999999999999))
+    formatted_num = ' '.join(card_num[i:i+4] for i in range(0, 16, 4))
+    print("Issued credit card {} for account {}".format(formatted_num, acc))
+
+def deposit():
+    acc = input("Account number: ")
+    if acc in accounts:
+        amt = float(input("Deposit amount: "))
+        accounts[acc]["Balance"] += amt
+        print("Deposited {}, New balance: {}".format(amt, accounts[acc]['Balance']))
+    else:
+        print("Account not found!")
+
+def withdraw():
+    acc = input("Account number: ")
+    if acc in accounts:
+        amt = float(input("Withdrawal amount: "))
+        if accounts[acc]["Balance"] >= amt:
+            accounts[acc]["Balance"] -= amt
+            print("Withdrew {}, New balance: {}".format(amt, accounts[acc]['Balance']))
+        else:
+            print("Insufficient balance!")
+    else:
+        print("Account not found!")
+
+def balance_inquiry():
+    acc = input("Account number: ")
+    if acc in accounts:
+        print("Balance: {}".format(accounts[acc]['Balance']))
+    else:
+        print("Account not found!")
+
+def update_account():
+    acc = input("Account number: ")
+    if acc in accounts:
+        name = input("New account holder's name: ")
+        accounts[acc]["Name"] = name
+        print("Account updated!")
+    else:
+        print("Account not found!")
+
+def close_account():
+    acc = input("Account number to close: ")
+    if acc in accounts:
+        del accounts[acc]
+        print("Account closed!")
+    else:
+        print("Account not found!")
+
+def main():
+    print("BANK MANAGEMENT SYSTEM")
+    while True:
+        print("\n1. Create Account\n2. List Accounts\n3. Issue Credit Card\n4. Deposit\n5. Withdraw\n6. Balance Inquiry\n7. Update Account Info\n8. Close Account\n9. Exit")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            create_account()
+        elif choice == "2":
+            list_accounts()
+        elif choice == "3":
+            issue_credit_card()
+        elif choice == "4":
+            deposit()
+        elif choice == "5":
+            withdraw()
+        elif choice == "6":
+            balance_inquiry()
+        elif choice == "7":
+            update_account()
+        elif choice == "8":
+            close_account()
+        elif choice == "9":
+            print("Thank you!")
+            break
+        else:
+            print("Invalid choice! Please try again!")
+
+if __name__ == "__main__":
+    main()
